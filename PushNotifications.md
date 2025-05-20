@@ -28,7 +28,7 @@ So to the handle the refresh, we need to know prev token.
 
 ### Table schema
 
-userId, token, createAt, updateAt
+userId, token, updatedAt
 
 ### FCM
 
