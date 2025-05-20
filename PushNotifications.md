@@ -62,3 +62,82 @@ userId, token, updatedAt
 * **Same user on multiple devices?** → Each device has a unique token.
 * **Same device, multiple user accounts in app?** → All users share the same token (unless you separate them).
 * **Same app, but reinstalled?** → New token.
+
+### OS level permissions & in-app user notification settings
+
+Excellent — you’re asking the **right question**. To build a robust notification system, you need to **distinguish** between:
+
+---
+
+## 🔐 1. **OS-Level Permissions**
+
+> Controlled by the device (iOS/Android)
+
+### ✅ What you get from FCM:
+
+```dart
+NotificationSettings settings = await FirebaseMessaging.instance.requestPermission();
+```
+
+### Use this to determine:
+
+* Whether the user **allowed notifications at system level**
+* Whether FCM will actually **deliver notifications**
+
+| Status                   | Meaning             | Can store token? | Can send notification? |
+| ------------------------ | ------------------- | ---------------- | ---------------------- |
+| `authorized`             | Allowed by OS       | ✅ Yes            | ✅ Yes                  |
+| `denied`                 | User denied prompt  | ❌ No             | ❌ No                   |
+| `notDetermined`          | Not asked yet       | ⚠️ Not safe      | ❌ No                   |
+| `provisional` (iOS only) | Temporarily allowed | ✅ Yes            | ⚠️ Limited delivery    |
+
+---
+
+## 📱 2. **In-App Notification Preferences**
+
+> Controlled by the user inside your app (e.g. toggle switch)
+
+This is a **custom boolean flag** you track yourself, e.g.:
+
+```dart
+sendNotifications: true // user allows notifications from your app
+```
+
+| Scenario                            | OS Permission | App Toggle | Token Stored | Send Notification |
+| ----------------------------------- | ------------- | ---------- | ------------ | ----------------- |
+| ✅ Allowed by OS + App               | ✅             | ✅          | ✅            | ✅                 |
+| ❌ Allowed by OS but disabled in app | ✅             | ❌          | ✅            | ❌                 |
+| ❌ Denied by OS                      | ❌             | Any        | ❌            | ❌                 |
+
+---
+
+## 🛠 Recommended Handling Logic
+
+### 🔁 On app launch or login:
+
+```dart
+final settings = await FirebaseMessaging.instance.requestPermission();
+
+if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+  final token = await FirebaseMessaging.instance.getToken();
+  if (token != null) {
+    await saveTokenToBackend(
+      userId: userId,
+      token: token,
+      sendNotifications: userPrefersNotifications, // your toggle
+    );
+  }
+} else {
+  // OS denied notifications — maybe update backend to reflect it
+}
+```
+
+---
+
+## 🧠 Summary
+
+| Factor                | Store Token? | Send Notification?         |
+| --------------------- | ------------ | -------------------------- |
+| OS permission granted | ✅ Yes        | Depends on app toggle      |
+| OS permission denied  | ❌ No         | ❌ No                       |
+| App toggle = false    | ✅ Yes        | ❌ No (respect user choice) |
