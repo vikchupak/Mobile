@@ -29,3 +29,36 @@ So to the handle the refresh, we need to know prev token.
 ### Table schema
 
 userId, token, createAt, updateAt
+
+### FCM
+
+**FCM token is unique per *device + app installation*** pair.
+
+## ✅ FCM Token Uniqueness
+
+| Factor                    | Included in Token Identity |
+| ------------------------- | -------------------------- |
+| Device hardware           | ✅ Yes                      |
+| App install (Instance ID) | ✅ Yes                      |
+| User account              | ❌ No (not tied directly)   |
+
+---
+
+### 🔄 What causes the FCM token to change?
+
+| Action                      | Does Token Change? | Why?                                                |
+| --------------------------- | ------------------ | --------------------------------------------------- |
+| App reinstalled             | ✅ Yes              | New instance ID                                     |
+| App cleared data            | ✅ Yes              | Token is regenerated                                |
+| User logs out/logs in       | ❌ No               | Token is user-agnostic                              |
+| OS-level permission changed | ❌/⚠️ Sometimes     | May change on some Android/iOS versions             |
+| Token refresh               | ✅ Yes              | Randomized by Firebase for various internal reasons |
+| OS update or device change  | ✅ Yes              | Token depends on device fingerprint                 |
+
+---
+
+## 🧠 Key Implications
+
+* **Same user on multiple devices?** → Each device has a unique token.
+* **Same device, multiple user accounts in app?** → All users share the same token (unless you separate them).
+* **Same app, but reinstalled?** → New token.
