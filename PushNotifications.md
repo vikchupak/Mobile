@@ -4,7 +4,7 @@
 
 Pseudo code that guarantee the above criteria are meet
 ```dart
-String? oldToken = await FirebaseMessaging.instance.getToken(); // get current token on device-app
+String? oldToken = await FirebaseMessaging.instance.getToken(); // get current device-app token
 await FirebaseMessaging.instance.deleteToken(); // terminale current device-app token
 String? newToken = await FirebaseMessaging.instance.getToken(); // Request new device-app token
 await saveTokenOnBackend(userId, oldToken, newToken); // replace oldToken(if exists) with newToken or insert newToken(if oldToken not exists)
