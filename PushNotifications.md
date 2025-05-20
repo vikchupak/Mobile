@@ -30,7 +30,7 @@ So to the handle the refresh, we need to know prev token.
 
 userId, token, updatedAt
 
-### FCM
+# About FCM
 
 **FCM token is unique per *device + app installation*** pair.
 
@@ -63,7 +63,7 @@ userId, token, updatedAt
 * **Same device, multiple user accounts in app?** → All users share the same token (unless you separate them).
 * **Same app, but reinstalled?** → New token.
 
-### OS level permissions & in-app user notification settings
+# OS level permissions & in-app user notification settings
 
 Excellent — you’re asking the **right question**. To build a robust notification system, you need to **distinguish** between:
 
