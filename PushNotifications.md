@@ -23,5 +23,5 @@ onUserDelete(userId) // terminate and remove all user tokens
 
 So to the handle the refresh, we need to know prev token.
 
-- On login, we need to store "old" token to local starage, and subscribe to onTokenRefresh.
+- On login, we need to store "old" token to local starage, and subscribe to `onTokenRefresh`.
 - On refresh, we just replace oldToken from local storage with newToken(in backend and local storage).
