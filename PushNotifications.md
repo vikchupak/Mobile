@@ -16,3 +16,12 @@ onUserLogin(userId) // terminate oldToken, generate new token. Replace oldToken 
 onUserLogout(userId) // terminate and remove token
 onUserDelete(userId) // terminate and remove all user tokens
 ```
+
+### Token refresh
+
+`FirebaseMessaging.onTokenRefresh` does not return the old token — it only gives you the new FCM token.
+
+So to the handle the refresh, we need to know prev token.
+
+- On login, we need to store "old" token to local starage, and subscribe to onTokenRefresh.
+- On refresh, we just replace oldToken from local storage with newToken on backend side.
