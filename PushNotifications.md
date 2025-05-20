@@ -65,10 +65,6 @@ userId, token, updatedAt
 
 # OS level permissions & in-app user notification settings
 
-Excellent — you’re asking the **right question**. To build a robust notification system, you need to **distinguish** between:
-
----
-
 ## 🔐 1. **OS-Level Permissions**
 
 > Controlled by the device (iOS/Android)
