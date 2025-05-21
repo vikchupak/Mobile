@@ -137,3 +137,47 @@ if (settings.authorizationStatus == AuthorizationStatus.authorized) {
 | OS permission granted | ✅ Yes        | Depends on app toggle      |
 | OS permission denied  | ❌ No         | ❌ No                       |
 | App toggle = false    | ✅ Yes        | ❌ No (respect user choice) |
+
+# Asking for permissions vs Checking existing permissions
+
+Asking for permissions
+```dart
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+Future<void> requestNotificationPermission() async {
+  NotificationSettings settings = await FirebaseMessaging.instance.requestPermission();
+
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    print('User granted permission');
+  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    print('User granted provisional permission');
+  } else {
+    print('User declined or has not accepted permission');
+  }
+}
+```
+
+Checking existing permissions
+```dart
+Future<void> checkNotificationPermission() async {
+  NotificationSettings settings = await FirebaseMessaging.instance.getNotificationSettings();
+
+  switch (settings.authorizationStatus) {
+    case AuthorizationStatus.authorized:
+      print('Permission granted');
+      break;
+    case AuthorizationStatus.provisional:
+      print('Provisional permission');
+      break;
+    case AuthorizationStatus.denied:
+      print('Permission denied');
+      break;
+    case AuthorizationStatus.notDetermined:
+      print('Permission not determined');
+      break;
+    case AuthorizationStatus.ephemeral:
+      print('Ephemeral permission (iOS only)');
+      break;
+  }
+}
+```
