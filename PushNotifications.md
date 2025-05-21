@@ -181,3 +181,112 @@ Future<void> checkNotificationPermission() async {
   }
 }
 ```
+
+# Deleting tokens on app uninstall
+
+When a user uninstalls your app, here's what happens to the FCM (Firebase Cloud Messaging) token:
+
+---
+
+### 🔥 Token is deleted on uninstall
+
+* When the app is uninstalled, **your backend still has a copy of that token**
+
+---
+
+### 🚫 What happens if you send to a deleted token?
+
+* If you send a message to that old token:
+
+  * FCM will attempt delivery.
+  * It will fail with an error like:
+
+    * Android: `NotRegistered`
+    * iOS: `APNsUnregistered`
+* You should interpret this as a signal to remove the token from your server.
+
+---
+
+### ✅ Best practice: handle token deletion on your backend
+
+If you're using a server to send FCM messages via the HTTP v1 API or legacy HTTP API, check the response and remove tokens that return these errors:
+
+```json
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+```
+
+Or:
+
+```json
+{
+  "error": {
+    "message": "NotRegistered"
+  }
+}
+```
+
+This means: the token is no longer valid — the app may have been uninstalled.
+
+---
+
+### 🧼 Summary
+
+| Event         | Token on Device | Token on Server | Action Needed       |
+| ------------- | --------------- | --------------- | ------------------- |
+| App uninstall | ❌ Deleted       | ✅ Still present | ⛔ Remove on error   |
+| App reinstall | ✅ New token     | ❌ Old one stale | ✅ Re-register token |
+
+---
+
+Firebase (and FCM) eventually knows that the app was uninstalled, but not instantly. Here's the deeper explanation:
+
+---
+
+### 🔍 Does Firebase know when the app is uninstalled?
+
+✅ **Yes — indirectly.**
+
+* When the app is uninstalled, the **OS deletes the FCM token** from the device.
+* Firebase doesn't get a direct "uninstall" event — but it learns about the uninstall **when it tries to deliver a push message** to that deleted token.
+
+---
+
+### 🧠 How Firebase "learns" about uninstall:
+
+1. You send a push notification to a token.
+2. FCM tries to deliver it.
+3. If the app was uninstalled:
+
+   * FCM gets a response from the push service (GCM/APNs) saying the token is no longer valid.
+   * It marks the token as invalid (terminated).
+4. On your side, the response will contain:
+
+   * For Android: `NotRegistered`
+   * For iOS: `APNsUnregistered`
+
+Only at this point does Firebase treat the token as dead.
+
+---
+
+### ⚠️ Important
+
+Firebase doesn’t proactively know about the uninstall until you send a message. So:
+
+* There is no "real-time" uninstall detection.
+* You must handle these error responses on your backend and delete the token from your database.
+
+---
+
+### 🧼 Best Practice Summary
+
+| Action                       | Who handles it?          |
+| ---------------------------- | ------------------------ |
+| App uninstalled              | OS deletes FCM token     |
+| Firebase marks token invalid | When you send a message  |
+| Token cleanup                | You — on receiving error |
