@@ -1,7 +1,5 @@
 # Xcode
 
-### 🧑‍💻 What is **Xcode**?
-
 **Xcode** is Apple’s official **IDE (Integrated Development Environment)** for developing apps for:
 
 * **iOS** (iPhone, iPad)
