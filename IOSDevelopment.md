@@ -238,3 +238,98 @@ Although SPM is official, **Flutter iOS plugins** are still mostly built around 
 | ------------------------------ | ------------------------------- |
 | Flutter iOS project            | **CocoaPods**                   |
 | Native Swift or Xcode-only app | **Swift Package Manager** (SPM) |
+
+# Flavors
+
+**Flavors** (sometimes called **build variants**) are a way to create **different versions of the same app** from a single codebase. Each flavor can have its own:
+
+* App name
+* App icon
+* API endpoints / configurations
+* Build settings (e.g., debug, release)
+* Package/bundle identifiers
+* Resources and assets
+
+---
+
+## Are Flavors Only for Flutter?
+
+**No, flavors are not only for Flutter.**
+
+* **Flavors** is a **concept** used across many mobile platforms and frameworks to manage multiple build variants.
+* In **Android (native)**, flavors are configured in `build.gradle` using `productFlavors`.
+* In **iOS (native)**, flavors correspond to different **schemes** and **build configurations** in Xcode.
+* In **Flutter**, flavors integrate those native flavors with Flutter’s build system and Dart code.
+
+---
+
+## Platform Examples
+
+| Platform         | How flavors/variants are handled                                                          |
+| ---------------- | ----------------------------------------------------------------------------------------- |
+| **Flutter**      | Use `--flavor` flag + multiple `main_*.dart` files + native flavor configs in Android/iOS |
+| **Android**      | `productFlavors` in Gradle build scripts                                                  |
+| **iOS**          | Multiple **schemes** and **build configurations** in Xcode                                |
+| **React Native** | Use different JS bundles + native flavor configs                                          |
+
+---
+
+## Why Use Flavors?
+
+* To build **dev**, **staging**, and **production** versions from one codebase
+* To customize branding or features per client (white-label apps)
+* To test different backend environments without changing code manually
+
+---
+
+### Summary
+
+| Question                     | Answer                                                 |
+| ---------------------------- | ------------------------------------------------------ |
+| What are flavors?            | Different app variants/builds from one codebase        |
+| Are flavors only in Flutter? | No, flavors exist in Android, iOS, Flutter, and more   |
+| Why use flavors?             | To manage multiple environments or branded apps easily |
+
+# Fastlane
+
+**Fastlane** is an open-source **automation tool** that helps developers automate the entire iOS and Android app release process.
+
+---
+
+### What Can Fastlane Do?
+
+* Automatically **build** your app
+* Manage **code signing** (certificates, provisioning profiles)
+* Run **tests**
+* Generate **screenshots** for the App Store / Play Store
+* **Deploy** your app to TestFlight, App Store, Google Play, or beta services
+* Automate **versioning** and changelog generation
+* Integrate with CI/CD systems
+
+---
+
+### Why Use Fastlane?
+
+* Saves tons of repetitive manual work
+* Reduces errors in code signing and deployment
+* Supports both **iOS** and **Android**
+* Works great for Flutter apps too (since Flutter builds native iOS/Android apps under the hood)
+
+---
+
+### How Fastlane Works
+
+You write **“lanes”** in a `Fastfile` that describe the steps you want to automate. For example:
+
+```ruby
+lane :release do
+  build_app(scheme: "MyApp")
+  upload_to_app_store
+end
+```
+
+Then just run:
+
+```bash
+fastlane release
+```
