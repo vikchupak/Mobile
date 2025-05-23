@@ -2,6 +2,12 @@
 - On the same device/app, there should be possibility for different users to login. Each user notifications should be isolated from other users on that device/app.
 - The same user can login on different devices/apps. The user should receive notification on all devices/apps he/she is logged in.
 
+### termination
+
+FCM tokens can only be terminated (i.e. explicitly deleted) on the client side.
+
+---
+
 Pseudo code that guarantee the above criteria are meet
 ```dart
 String? oldToken = await FirebaseMessaging.instance.getToken(); // get current device-app token
