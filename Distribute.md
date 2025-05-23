@@ -1,4 +1,4 @@
-- Enroll apple developer program (99 $ per year)
+- Enroll apple developer program (99$ per year)
 - Create android developer account 25$ fee only once
 
 # iOS
