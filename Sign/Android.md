@@ -35,9 +35,15 @@ keytool -list -v \
 ```bash
 flutter clean
 flutter pub get
-flutter build apk --release --flavor stage --dart-define=ENVIRONMENT=Test
+flutter build apk --release --flavor stage --dart-define=ENVIRONMENT=Stage
 ```
 
 ### Prod vs stage vs dev
 
 - Using the same signing key for both your production and test builds is **common and recommended practice**.
+
+### iOS build command
+
+```bash
+flutter build ipa --release --flavor stage --dart-define=ENVIRONMENT=Stage
+```
