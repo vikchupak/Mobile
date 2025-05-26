@@ -49,3 +49,20 @@ Output `build/app/outputs/flutter-apk/app-stage-release.apk`
 ```bash
 flutter build ipa --release --flavor stage --dart-define=ENVIRONMENT=Stage
 ```
+
+---
+
+For Android, we need:
+ - Actual `android/app/prod/google-services.json` and `android/app/stage/google-services.json` files.
+ - Correct `googleWebServerClientId` in files
+    - `assets/enviroment_values/production.json`
+    - `assets/enviroment_values/dev.json`
+    - `assets/enviroment_values/stage.json`
+  
+For iOS, we need:
+- Actual `ios/Runner/Firebase/prod/GoogleService-Info.plist` and `ios/Runner/Firebase/stage/GoogleService-Info.plist` files.
+- Correct `googleClientId` in files
+    - `assets/enviroment_values/production.json`
+    - `assets/enviroment_values/dev.json`
+    - `assets/enviroment_values/stage.json`
+ - Correct REVERSED `googleClientId` in `ios/Runner/Info.plist` file.
