@@ -38,6 +38,8 @@ flutter pub get
 flutter build apk --release --flavor stage --dart-define=ENVIRONMENT=Stage
 ```
 
+Output `build/app/outputs/flutter-apk/app-stage-release.apk`
+
 ### Prod vs stage vs dev
 
 - Using the same signing key for both your production and test builds is **common and recommended practice**.
