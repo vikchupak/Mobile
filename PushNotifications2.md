@@ -1,3 +1,8 @@
+There are:
+- OS-level permissions
+- User preferences in app globally
+- Specific app - user local storage setting (in order not to ask user again)
+
 # How push notifications are hadled in famous apps
 
 Great question. Here's how **famous apps like WhatsApp, Instagram, and Gmail** generally handle **push notification permissions** — especially when multiple users may use the same app on one device:
