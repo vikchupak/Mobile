@@ -55,3 +55,57 @@ This increases the chance of the user tapping “Allow”.
 | Track per-user prompts         | Store `asked_permission_for_$userId` in prefs    |
 | Don't show prompt if denied    | Use `getNotificationSettings()` to detect denial |
 | Support multiple users/devices | Track FCM tokens per user in Firestore           |
+
+# **Pre-Permission Dialog**: So the user is asked twice, on the custom screen and later on OS popup?
+
+Yes, exactly — **that’s intentional and considered best UX practice**.
+
+---
+
+### ✅ What is a Pre-Permission Dialog?
+
+A **custom in-app dialog/screen** shown *before* calling the OS-level permission request.
+Its goal is to:
+
+* Explain **why** the app wants permission
+* Reduce the chance that the user taps "Don't Allow"
+* Let the app **delay** or **skip** OS popup for now, based on user choice
+
+---
+
+### ✅ Why ask twice?
+
+| Prompt Type    | Who shows it?      | Can be skipped?  | Customizable? |
+| -------------- | ------------------ | ---------------- | ------------- |
+| Pre-permission | Your app           | ✅ Yes            | ✅ Yes         |
+| OS popup       | Android/iOS system | ❌ No (if called) | ❌ No          |
+
+You **ask once in your own words**, and if user agrees, then you call:
+
+```dart
+await FirebaseMessaging.instance.requestPermission();
+```
+
+Only then does the **OS popup** appear.
+
+---
+
+### ✅ Real-world example flow:
+
+1. **App dialog:**
+   *"We’d love to send you updates about your orders and messages."*
+   👉 Buttons: `Allow` / `Maybe Later`
+
+2. **If user taps "Allow" →**
+   Call `requestPermission()` → OS popup shows
+
+3. **If user taps "Maybe Later" →**
+   Do nothing — don’t call the OS prompt yet
+
+---
+
+### ✅ Benefits:
+
+* Users are more likely to grant permissions if they understand why
+* You can retry or delay the prompt without getting locked out
+* If the user taps "Don't Allow" on the OS popup, **you can’t ask again unless they manually change it in Settings**
