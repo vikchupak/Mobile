@@ -162,3 +162,56 @@ Yes, that's correct — and it’s a key behavior to understand when managing su
 
 * Yes — but they have to **switch the Play account in Google Play manually**, before making a purchase.
 * **Your app can’t change which Play Store account is used; only the user can.**
+
+# Apple
+
+Is this the same for apple store?
+
+Yes — **very similar principles apply for the Apple App Store**:
+
+---
+
+### ✅ **Apple App Store subscriptions are tied to the Apple ID**, not your app's login.
+
+So just like with Google Play:
+
+* **All purchases go through the Apple ID** currently signed in on the device.
+* **RevenueCat** assigns the purchase to the **App User ID** that was active in your app at the moment of purchase.
+
+---
+
+### 🔁 Example:
+
+* Device is logged into Apple ID: `parent@icloud.com`.
+* In your app:
+
+  * User A logs in with `child1@example.com` → RevenueCat App User ID = `child1_id`.
+  * User B logs in with `child2@example.com` → RevenueCat App User ID = `child2_id`.
+
+If either user **A or B** buys a subscription:
+
+* **The charge is applied to the Apple ID (`parent@icloud.com`)**.
+* **RevenueCat links the purchase to whichever App User ID was active** at that time.
+
+---
+
+### 🚨 Important consequences:
+
+* **Only one subscription per Apple ID per app.**
+
+  * If user A and B are using the same Apple ID, and A already has a subscription, then:
+
+    * If B tries to subscribe again, Apple may show a “You’re already subscribed” warning.
+    * If B proceeds, the existing subscription is re-assigned to `child2_id` (new RevenueCat user).
+
+* **This can cause unintended "subscription hijacking"**, especially in shared devices or families.
+
+---
+
+### 🧠 RevenueCat strategy tip:
+
+To protect subscriptions from being reassigned:
+
+* Use **`[restorePurchases]` wisely** – call it only when you're sure the user is recovering a lost purchase.
+* Use **entitlement verification and server-side checks** to determine which App User ID currently has a subscription.
+* Consider surfacing a warning if the device already has an active subscription tied to a different app user.
