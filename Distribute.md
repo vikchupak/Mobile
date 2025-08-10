@@ -5,11 +5,15 @@
 
 1. Register your Bundle ID - ID for your iOS app
 2. Create a record in App Store Connect > add your app ID
-3. add your app ID to Xcode (project) settings + configure auto signing the app using certificates
+3. Add your app ID to Xcode (project) settings + **configure auto signing the app using certificates**
 4. Add app icon
 5. increment build/app version in CFBundleVersion (for IOS), via flutter it is done via pubspec.yaml file
-6. xcode > .app bundle > .xarchive > .ipa
-7. .ipa > Apple Transport MacOS app > App Store Connect > TestFlight > App Store
+6. Use Xcode to build .ipa. `xcode > .app bundle > .xarchive > .ipa`
+7. Upload .ipa to App Store Connect. `.ipa > Apple Transport MacOS app > App Store Connect`
+   - Use App Store Connect to:
+     - Send to TestFlight
+     - Send to Apple Review
+     - Publish to App Store
 
 ---
 
