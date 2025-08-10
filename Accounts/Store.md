@@ -1,0 +1,5 @@
+- Google Play Store Account
+  - An **Email** is used as Account ID
+- (Apple) App Store Account
+  - An **Apple ID** is used as Account ID
+  - **Primary Apple ID Email** is used to login
