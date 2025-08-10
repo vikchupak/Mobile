@@ -1,6 +1,6 @@
 - (Regular) Apple ID Account → identity.
 - Apple Developer Program Account → special status of your Apple ID account that allows app publishing.
-- App Store Connect
+- App Store Connect → the online tool you log into with your developer account to manage apps.
 
 ---
 
