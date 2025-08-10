@@ -1,4 +1,4 @@
-- (Regular) Apple ID
+- (Regular) Apple ID → identity.
 - Apple Developer Program Account
 - App Store Connect
 
