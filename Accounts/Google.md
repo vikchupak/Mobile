@@ -4,7 +4,7 @@
 
 ---
 
-**1. Regular Google Account**
+**1. Regular Google Account** (Google Play account ID?)
 
 * What most people have (e.g., `you@gmail.com`).
 * Gives access to Gmail, Google Drive, YouTube, Photos, etc.
